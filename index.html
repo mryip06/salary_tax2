@@ -200,6 +200,11 @@
         const femaleNames = ['嘉泳', '美玲', '淑貞', '雅婷', '詠詩'];
         const keysOrder = ['a', 'b', 'c', 'd', 'e', 'f'];
 
+        function formatNumber(num) {
+            if (typeof num !== 'number' || isNaN(num)) return '0';
+            return (Math.round(num * 100) / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
         function evaluateInlineExpr(inputEl) {
             let val = inputEl.value.trim();
             if (!val) return;
@@ -208,275 +213,40 @@
                 let sanitized = val.replace(/,/g, '').replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
                 if (/^[0-9+\-*/().\s]+$/.test(sanitized)) {
                     let result = eval(sanitized);
-                    if (!isNaN(result) && isFinite(result)) inputEl.value = Math.round(result);
+                    if (!isNaN(result) && isFinite(result)) {
+                        inputEl.value = Math.round(result * 100) / 100;
+                    }
                 }
             } catch (err) {}
         }
 
-        function submitSingle(key) {
-            const q = questionHistory[currentIndex];
-            const inputEl = document.getElementById(`input-${key}`);
-            const feedbackEl = document.getElementById(`feedback-${key}`);
-            const markEl = document.getElementById(`mark-${key}`);
+        // Generate Progressive Tax Breakdown Formula String for Step (e)
+        function getTaxBreakdownString(netIncome) {
+            let remaining = netIncome;
+            let parts = [];
 
-            evaluateInlineExpr(inputEl);
-            const userVal = parseFloat(inputEl.value);
-            const correctVal = q.answers[key];
-
-            const steps = {
-                a: `<strong>(a)：</strong> $${q.details.monthlySalary.toLocaleString()} × ${q.details.totalMonths} = <strong>$${q.answers.a.toLocaleString()}</strong>`,
-                b: `<strong>(b)：</strong> ${q.details.allowances.map(a => a.desc).join(' + ')} = <strong>$${q.answers.b.toLocaleString()}</strong>`,
-                c: `<strong>(c)：</strong> ${q.details.deductions.map(d => d.desc).join(' + ')} = <strong>$${q.answers.c.toLocaleString()}</strong>`,
-                d: `<strong>(d)：</strong> $${q.answers.a.toLocaleString()} - $${q.answers.b.toLocaleString()} - $${q.answers.c.toLocaleString()} = <strong>$${q.answers.d.toLocaleString()}</strong>`,
-                e: `<strong>(e)：</strong> 累進稅率計算 = <strong>$${q.answers.e.toLocaleString()}</strong>`,
-                f: `<strong>(f)：</strong> $${q.answers.e.toLocaleString()} × 2 - $${q.details.prevProvisional.toLocaleString()} = <strong>$${q.answers.f.toLocaleString()}</strong>`
-            };
-
-            if (!isNaN(userVal) && Math.abs(userVal - correctVal) < 1) {
-                inputEl.classList.remove('border-rose-500', 'bg-rose-50');
-                inputEl.classList.add('border-emerald-500', 'bg-emerald-50');
-                markEl.innerHTML = '<span class="text-emerald-600">✅</span>';
-            } else {
-                inputEl.classList.remove('border-emerald-500', 'bg-emerald-50');
-                inputEl.classList.add('border-rose-500', 'bg-rose-50');
-                markEl.innerHTML = '<span class="text-rose-600">❌</span>';
+            // Tier 1: first 50,000 @ 2%
+            let b1 = Math.min(50000, remaining);
+            if (b1 > 0) {
+                parts.push(`50,000×2%`);
+                remaining -= b1;
             }
-
-            feedbackEl.innerHTML = steps[key];
-            feedbackEl.classList.remove('hidden');
-
-            const currentIndexInKeys = keysOrder.indexOf(key);
-            if (currentIndexInKeys < keysOrder.length - 1) {
-                document.getElementById(`input-${keysOrder[currentIndexInKeys + 1]}`).focus();
-            } else {
-                document.getElementById('btn-next-q').focus();
+            // Tier 2: next 50,000 @ 6%
+            if (remaining > 0) {
+                let b2 = Math.min(50000, remaining);
+                parts.push(`50,000×6%`);
+                remaining -= b2;
             }
-        }
-
-        document.querySelectorAll('.answer-input').forEach(input => {
-            const key = input.getAttribute('data-key');
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    submitSingle(key);
-                }
-            });
-            input.addEventListener('input', () => {
-                if (input.value.includes('=')) evaluateInlineExpr(input);
-            });
-        });
-
-        // Question Generator (Strictly matching Appendix 1 values & include Siblings)
-        function generateQuestion() {
-            let totalIncome = 0, totalAllowanceVal = 0, totalDeductionVal = 0, netIncome = 0;
-            let monthlySalary = 0, totalMonths = 12, extraBonusMonths = 0, scenarioText = '';
-            let allowances = [], deductions = [], prevProvisional = 0, taxPayable = 0, finalTaxPayable = 0;
-
-            while (netIncome <= 0) {
-                allowances = []; deductions = []; totalAllowanceVal = 0; totalDeductionVal = 0;
-                
-                const isMarried = Math.random() < 0.5;
-                const isMale = Math.random() < 0.5;
-                const primaryName = isMale ? maleNames[Math.floor(Math.random() * maleNames.length)] : femaleNames[Math.floor(Math.random() * femaleNames.length)];
-                const spouseName = isMale ? femaleNames[Math.floor(Math.random() * femaleNames.length)] : maleNames[Math.floor(Math.random() * maleNames.length)];
-
-                // 1. Basic / Married Allowance
-                if (isMarried) {
-                    allowances.push({ desc: '已婚人士免稅額 $290,000', val: 290000 });
-                    totalAllowanceVal += 290000;
-                } else {
-                    allowances.push({ desc: '基本免稅額 $145,000', val: 145000 });
-                    totalAllowanceVal += 145000;
-                }
-
-                // 2. Children & Single Parent Allowance
-                const numChildren = Math.floor(Math.random() * 3) + 1; // 1 to 3 children
-                const hasNewborn = Math.random() < 0.4;
-                
-                if (hasNewborn) {
-                    const normalChildren = numChildren - 1;
-                    if (normalChildren > 0) {
-                        allowances.push({ desc: `${normalChildren} 名子女免稅額 ($140,000 × ${normalChildren})`, val: normalChildren * 140000 });
-                        totalAllowanceVal += normalChildren * 140000;
-                    }
-                    allowances.push({ desc: '1 名新生子女免稅額及額外免稅額 ($140,000 × 2)', val: 280000 });
-                    totalAllowanceVal += 280000;
-                } else {
-                    allowances.push({ desc: `${numChildren} 名子女免稅額 ($140,000 × ${numChildren})`, val: numChildren * 140000 });
-                    totalAllowanceVal += numChildren * 140000;
-                }
-
-                // Add Single Parent Allowance if Single with Children!
-                if (!isMarried) {
-                    allowances.push({ desc: '單親免稅額 $145,000', val: 145000 });
-                    totalAllowanceVal += 145000;
-                }
-
-                // 3. Sibling Allowance ($37,500 each)
-                const hasSiblings = Math.random() < 0.4;
-                let siblingCount = 0;
-                if (hasSiblings) {
-                    siblingCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 siblings
-                    allowances.push({ desc: `${siblingCount} 名供養兄弟姊妹免稅額 ($37,500 × ${siblingCount})`, val: siblingCount * 37500 });
-                    totalAllowanceVal += siblingCount * 37500;
-                }
-
-                // 4. Parent / Grandparent Allowance
-                const numParents = Math.random() < 0.6 ? 1 : 2;
-                let parentDescs = [];
-                
-                for (let i = 0; i < numParents; i++) {
-                    const isMother = i === 0 ? Math.random() < 0.6 : false;
-                    const age = Math.floor(Math.random() * 15) + 55; // 55 to 69 years old
-                    const livesTogether = Math.random() < 0.5;
-                    const relation = isMother ? '母親' : '父親';
-                    
-                    if (age >= 60) {
-                        if (livesTogether) {
-                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($55,000 × 2)`, val: 110000 });
-                            totalAllowanceVal += 110000;
-                            parentDescs.push(`同住的${age}歲${relation}`);
-                        } else {
-                            allowances.push({ desc: `${age}歲${relation}免稅額 $55,000`, val: 55000 });
-                            totalAllowanceVal += 55000;
-                            parentDescs.push(`${age}歲非同住${relation}`);
-                        }
-                    } else {
-                        if (livesTogether) {
-                            // 55-59 Living Together Extra Allowance = $27,200 (Total = 27,500 + 27,200 = 54,700)
-                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($27,500 + $27,200)`, val: 54700 });
-                            totalAllowanceVal += 54700;
-                            parentDescs.push(`同住的${age}歲${relation}`);
-                        } else {
-                            allowances.push({ desc: `${age}歲${relation}免稅額 $27,500`, val: 27500 });
-                            totalAllowanceVal += 27500;
-                            parentDescs.push(`${age}歲非同住${relation}`);
-                        }
-                    }
-                }
-
-                // 5. Disability Allowance
-                const hasDisabled = Math.random() < 0.3;
-                if (hasDisabled) {
-                    allowances.push({ desc: '傷殘受養人免稅額 $75,000', val: 75000 });
-                    totalAllowanceVal += 75000;
-                }
-
-                // Income Calculation
-                monthlySalary = Math.floor(Math.random() * 65 + 25) * 1000;
-                extraBonusMonths = Math.random() < 0.6 ? 1 : 0;
-                totalMonths = 12 + extraBonusMonths;
-                totalIncome = monthlySalary * totalMonths;
-
-                // MPF REAL DYNAMIC CALCULATION
-                let mpfDeduction = 0;
-                if (monthlySalary >= 30000) {
-                    mpfDeduction = 18000;
-                } else {
-                    let regularMpf = Math.min(1500, Math.floor(monthlySalary * 0.05));
-                    let bonusMonthIncome = monthlySalary * (1 + extraBonusMonths);
-                    let bonusMpf = Math.min(1500, Math.floor(bonusMonthIncome * 0.05));
-                    mpfDeduction = (regularMpf * 11) + bonusMpf;
-                }
-
-                deductions.push({ desc: `強積金供款 $${mpfDeduction.toLocaleString()}`, val: mpfDeduction });
-                totalDeductionVal = mpfDeduction;
-
-                const hasSecondDeduction = Math.random() < 0.6;
-                let eduExpense = 0;
-                if (hasSecondDeduction) {
-                    eduExpense = Math.floor(Math.random() * 50 + 20) * 1000;
-                    let actualEdu = Math.min(100000, eduExpense);
-                    deductions.push({ desc: `個人進修開支 $${actualEdu.toLocaleString()}`, val: actualEdu });
-                    totalDeductionVal += actualEdu;
-                }
-
-                netIncome = totalIncome - totalAllowanceVal - totalDeductionVal;
-                
-                // Adjust income to ensure Net Income > 0
-                if (netIncome <= 0) {
-                    monthlySalary += Math.ceil((Math.abs(netIncome) + 60000) / totalMonths);
-                    totalIncome = monthlySalary * totalMonths;
-                    if (monthlySalary >= 30000) {
-                        mpfDeduction = 18000;
-                    } else {
-                        let regularMpf = Math.min(1500, Math.floor(monthlySalary * 0.05));
-                        let bonusMonthIncome = monthlySalary * (1 + extraBonusMonths);
-                        let bonusMpf = Math.min(1500, Math.floor(bonusMonthIncome * 0.05));
-                        mpfDeduction = (regularMpf * 11) + bonusMpf;
-                    }
-                    deductions[0] = { desc: `強積金供款 $${mpfDeduction.toLocaleString()}`, val: mpfDeduction };
-                    totalDeductionVal = deductions.reduce((sum, item) => sum + item.val, 0);
-                    netIncome = totalIncome - totalAllowanceVal - totalDeductionVal;
-                }
-
-                // Progressive Tax
-                taxPayable = 0;
-                let remaining = netIncome;
-                let b1 = Math.min(50000, remaining); taxPayable += b1 * 0.02; remaining -= b1;
-                if (remaining > 0) { let b2 = Math.min(50000, remaining); taxPayable += b2 * 0.06; remaining -= b2; }
-                if (remaining > 0) { let b3 = Math.min(50000, remaining); taxPayable += b3 * 0.10; remaining -= b3; }
-                if (remaining > 0) { let b4 = Math.min(50000, remaining); taxPayable += b4 * 0.14; remaining -= b4; }
-                if (remaining > 0) { taxPayable += remaining * 0.17; }
-
-                prevProvisional = Math.floor(Math.random() * 8 + 2) * 1000;
-                finalTaxPayable = (taxPayable * 2) - prevProvisional;
-
-                // Scenario Text Generation
-                scenarioText = `${primaryName}的每月薪金為 $${monthlySalary.toLocaleString()}，`;
-                if (extraBonusMonths > 0) scenarioText += `年終可額外獲發 ${extraBonusMonths} 個月薪金作獎金。`;
-                
-                if (isMarried) {
-                    scenarioText += `${spouseName}為家庭主婦，選擇與配偶合併報稅。`;
-                    scenarioText += `${primaryName}與配偶育有 ${numChildren} 名子女${hasNewborn ? '（包含 1 名本年度誕生的初生女兒）' : ''}，`;
-                } else {
-                    scenarioText += `${primaryName}屬單親身份，獨力撫養 ${numChildren} 名子女${hasNewborn ? '（包含 1 名本年度誕生的初生女兒）' : ''}，`;
-                }
-
-                scenarioText += `並需供養${parentDescs.join('及')}。`;
-                if (hasSiblings) scenarioText += `${primaryName}本年度亦負擔 ${siblingCount} 名未成年弟弟/妹妹的全年生活開支。`;
-                if (hasDisabled) scenarioText += `${primaryName}亦需照顧一名傷殘受養人。`;
-                if (hasSecondDeduction) scenarioText += `${primaryName}本年度修讀課程，學費開支為 $${eduExpense.toLocaleString()}。`;
-                scenarioText += ` 計算${isMarried ? `${primaryName}及${spouseName}的家庭` : primaryName}的薪俸稅（假設去年的預繳稅款為 $${prevProvisional.toLocaleString()}）。`;
+            // Tier 3: next 50,000 @ 10%
+            if (remaining > 0) {
+                let b3 = Math.min(50000, remaining);
+                parts.push(`50,000×10%`);
+                remaining -= b3;
             }
-
-            return {
-                text: scenarioText,
-                answers: { a: totalIncome, b: totalAllowanceVal, c: totalDeductionVal, d: netIncome, e: taxPayable, f: finalTaxPayable },
-                details: { monthlySalary, totalMonths, allowances, deductions, prevProvisional }
-            };
-        }
-
-        function renderQuestion(qObj) {
-            document.getElementById('question-text').innerText = qObj.text;
-            document.getElementById('question-number').innerText = `題目 #${currentIndex + 1}`;
-            keysOrder.forEach(key => {
-                const inputEl = document.getElementById(`input-${key}`);
-                const feedbackEl = document.getElementById(`feedback-${key}`);
-                const markEl = document.getElementById(`mark-${key}`);
-                inputEl.value = '';
-                inputEl.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50', 'bg-rose-50');
-                feedbackEl.classList.add('hidden');
-                feedbackEl.innerHTML = '';
-                markEl.innerHTML = '';
-            });
-            document.getElementById('btn-prev-q').disabled = (currentIndex === 0);
-            document.getElementById('input-a').focus();
-        }
-
-        document.getElementById('btn-next-q').addEventListener('click', () => {
-            currentIndex++;
-            if (currentIndex >= questionHistory.length) questionHistory.push(generateQuestion());
-            renderQuestion(questionHistory[currentIndex]);
-        });
-
-        document.getElementById('btn-prev-q').addEventListener('click', () => {
-            if (currentIndex > 0) { currentIndex--; renderQuestion(questionHistory[currentIndex]); }
-        });
-
-        questionHistory.push(generateQuestion());
-        currentIndex = 0;
-        renderQuestion(questionHistory[0]);
-    </script>
-</body>
-</html>
+            // Tier 4: next 50,000 @ 14%
+            if (remaining > 0) {
+                let b4 = Math.min(50000, remaining);
+                parts.push(`50,000×14%`);
+                remaining -= b4;
+            }
+            // Tier 5: remainder @ 17%
