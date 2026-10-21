@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香港薪俸稅 (Salaries Tax) 互動練習機</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen p-2 md:p-4 font-sans">
+
+    <div class="max-w-7xl mx-auto w-full pb-10">
+        
+        <!-- Header Bar -->
+        <header class="glass-card rounded-xl p-3 shadow-sm mb-3">
+            <h1 class="text-base md:text-xl font-bold text-indigo-700 flex items-center gap-2">
+                <i class="fa-solid fa-calculator"></i> 香港薪俸稅互動練習
+            </h1>
+            <p class="text-xs text-slate-500 mt-0.5">💡 輸入框支援直接計算，例如輸入 <code>25000*0.05*12=</code> 或按 Enter 自動算數並核對！</p>
+        </header>
+
+        <!-- Main Layout: 2 Columns Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+            
+            <!-- Left Column: Question & Answers (7 cols) -->
+            <main class="lg:col-span-7 glass-card rounded-xl p-3 md:p-4 shadow-md space-y-3">
+                
+                <!-- Question Number Badge & Scenario -->
+                <div class="flex items-center justify-between pb-1 border-b border-slate-100">
+                    <span id="question-number" class="font-bold text-indigo-900 text-xs md:text-sm">題目 #1</span>
+                </div>
+
+                <div class="bg-indigo-50/80 border border-indigo-100 rounded-lg p-2.5 text-xs md:text-sm leading-relaxed text-slate-800">
+                    <p id="question-text" class="font-medium">載入題目中...</p>
+                </div>
+
+                <!-- Answer Fields (a) - (f) -->
+                <div class="space-y-2">
+                    
+                    <!-- Sub-question (a) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(a) 全年總收入</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-a" data-key="a" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按 Enter 提交">
+                            <button onclick="submitSingle('a')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-a" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-a" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (b) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(b) 免稅額總和 (表 7.1)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按 Enter 提交">
+                            <button onclick="submitSingle('b')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-b" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-b" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (c) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(c) 扣除額總和 (表 7.2，含強積金 MPF)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：25000*5%*12">
+                            <button onclick="submitSingle('c')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-c" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-c" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (d) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(d) 應課稅入息實額</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-d" data-key="d" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：收入 - 免稅額 - 扣除額">
+                            <button onclick="submitSingle('d')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-d" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-d" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (e) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(e) 本年度薪俸稅款 (不連暫繳稅款)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-e" data-key="e" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按累進稅率計算">
+                            <button onclick="submitSingle('e')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-e" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-e" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (f) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(f) 應繳薪俸稅款 (計及上一年度預繳稅款後)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-f" data-key="f" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：稅款*2 - 預繳稅">
+                            <button onclick="submitSingle('f')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-f" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-f" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom Navigation Controls -->
+                <div class="pt-2 border-t border-slate-200 flex items-center justify-between gap-3">
+                    <button id="btn-prev-q" class="flex-1 py-2 bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-xs md:text-sm font-semibold transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-chevron-left"></i> 上一題
+                    </button>
+                    <button id="btn-next-q" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs md:text-sm font-semibold transition flex items-center justify-center gap-1">
+                        下一題 <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+            </main>
+
+            <!-- Right Column: Full Tax Reference Tables (5 cols) -->
+            <aside class="lg:col-span-5 space-y-3">
+                
+                <!-- Table 7.1 Allowance -->
+                <div class="glass-card rounded-xl p-3 shadow-md border border-slate-200">
+                    <h2 class="text-xs md:text-sm font-bold text-indigo-800 mb-2 flex items-center gap-1.5 border-b pb-1.5">
+                        <i class="fa-solid fa-table-list text-indigo-600"></i> 表 7.1 免稅額表 (2026/2027)
+                    </h2>
+                    <div class="overflow-x-auto rounded-lg border border-slate-200">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-slate-100 text-slate-700 border-b">
+                                <tr><th class="p-1.5">免稅項目</th><th class="p-1.5 text-right">金額 ($)</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr><td class="p-1.5">基本免稅額</td><td class="p-1.5 text-right font-mono font-semibold">145,000</td></tr>
+                                <tr><td class="p-1.5">已婚人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">290,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">單親免稅額</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">145,000</td></tr>
+                                <tr><td class="p-1.5">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">初生子女額外免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
+                                <tr><td class="p-1.5">供養父母/祖父母 (60歲或以上)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr><td class="p-1.5">供養父母額外免稅額 (同住, 60歲+)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr><td class="p-1.5">供養父母/祖父母 (55-59歲)</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
+                                <tr><td class="p-1.5">供養父母額外免稅額 (同住, 55-59歲)</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
+                                <tr><td class="p-1.5">傷殘受養人免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
+                                <tr><td class="p-1.5">傷殘人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 7.2 Deduction -->
+                <div class="glass-card rounded-xl p-3 shadow-md border border-slate-200">
+                    <h2 class="text-xs md:text-sm font-bold text-amber-800 mb-2 flex items-center gap-1.5 border-b pb-1.5">
+                        <i class="fa-solid fa-receipt text-amber-600"></i> 表 7.2 扣除表 (扣稅上限)
+                    </h2>
+                    <div class="overflow-x-auto rounded-lg border border-slate-200">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-slate-100 text-slate-700 border-b">
+                                <tr><th class="p-1.5">常見扣稅項目</th><th class="p-1.5 text-right">扣稅上限 ($)</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr class="bg-amber-100/70 font-semibold text-amber-900">
+                                    <td class="p-1.5">強積金 (MPF) 強制性供款</td><td class="p-1.5 text-right font-mono">18,000</td>
+                                </tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">個人進修開支</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">居所貸款利息</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">長者住宿照顧開支</td><td class="p-1.5 text-right font-mono">110,000</td></tr>
+                                <tr><td class="p-1.5 text-slate-500">住宅租金扣除</td><td class="p-1.5 text-right font-mono text-slate-500">100,000 / 120,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        let questionHistory = [];
+        let currentIndex = -1;
+
+        const maleNames = ['偉文', '家豪', '志明', '俊傑', '浩然'];
+        const femaleNames = ['嘉泳', '美玲', '淑貞', '雅婷', '詠詩'];
+        const keysOrder = ['a', 'b', 'c', 'd', 'e', 'f'];
+
+        function evaluateInlineExpr(inputEl) {
+            let val = inputEl.value.trim();
+            if (!val) return;
+            if (val.endsWith('=')) val = val.slice(0, -1).trim();
+            try {
+                let sanitized = val.replace(/,/g, '').replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
+                if (/^[0-9+\-*/().\s]+$/.test(sanitized)) {
+                    let result = eval(sanitized);
+                    if (!isNaN(result) && isFinite(result)) inputEl.value = Math.round(result);
+                }
+            } catch (err) {}
+        }
+
+        function submitSingle(key) {
+            const q = questionHistory[currentIndex];
+            const inputEl = document.getElementById(`input-${key}`);
+            const feedbackEl = document.getElementById(`feedback-${key}`);
+            const markEl = document.getElementById(`mark-${key}`);
+
+            evaluateInlineExpr(inputEl);
+            const userVal = parseFloat(inputEl.value);
+            const correctVal = q.answers[key];
+
+            const steps = {
+                a: `<strong>(a)：</strong> $${q.details.monthlySalary.toLocaleString()} × ${q.details.totalMonths} = <strong>$${q.answers.a.toLocaleString()}</strong>`,
+                b: `<strong>(b)：</strong> ${q.details.allowances.map(a => a.desc).join(' + ')} = <strong>$${q.answers.b.toLocaleString()}</strong>`,
+                c: `<strong>(c)：</strong> ${q.details.deductions.map(d => d.desc).join(' + ')} = <strong>$${q.answers.c.toLocaleString()}</strong>`,
+                d: `<strong>(d)：</strong> $${q.answers.a.toLocaleString()} - $${q.answers.b.toLocaleString()} - $${q.answers.c.toLocaleString()} = <strong>$${q.answers.d.toLocaleString()}</strong>`,
+                e: `<strong>(e)：</strong> 累進稅率計算 = <strong>$${q.answers.e.toLocaleString()}</strong>`,
+                f: `<strong>(f)：</strong> $${q.answers.e.toLocaleString()} × 2 - $${q.details.prevProvisional.toLocaleString()} = <strong>$${q.answers.f.toLocaleString()}</strong>`
+            };
+
+            if (!isNaN(userVal) && Math.abs(userVal - correctVal) < 1) {
+                inputEl.classList.remove('border-rose-500', 'bg-rose-50');
+                inputEl.classList.add('border-emerald-500', 'bg-emerald-50');
+                markEl.innerHTML = '<span class="text-emerald-600">✅</span>';
+            } else {
+                inputEl.classList.remove('border-emerald-500', 'bg-emerald-50');
+                inputEl.classList.add('border-rose-500', 'bg-rose-50');
+                markEl.innerHTML = '<span class="text-rose-600">❌</span>';
+            }
+
+            feedbackEl.innerHTML = steps[key];
+            feedbackEl.classList.remove('hidden');
+
+            const currentIndexInKeys = keysOrder.indexOf(key);
+            if (currentIndexInKeys < keysOrder.length - 1) {
+                document.getElementById(`input-${keysOrder[currentIndexInKeys + 1]}`).focus();
+            } else {
+                document.getElementById('btn-next-q').focus();
+            }
+        }
+
+        document.querySelectorAll('.answer-input').forEach(input => {
+            const key = input.getAttribute('data-key');
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitSingle(key);
+                }
+            });
+            input.addEventListener('input', () => {
+                if (input.value.includes('=')) evaluateInlineExpr(input);
+            });
+        });
+
+        // Question Generator (Dynamic Age, Real Dynamic MPF, Single Parent Allowance)
+        function generateQuestion() {
+            let totalIncome = 0, totalAllowanceVal = 0, totalDeductionVal = 0, netIncome = 0;
+            let monthlySalary = 0, totalMonths = 12, extraBonusMonths = 0, scenarioText = '';
+            let allowances = [], deductions = [], prevProvisional = 0, taxPayable = 0, finalTaxPayable = 0;
+
+            while (netIncome <= 0) {
+                allowances = []; deductions = []; totalAllowanceVal = 0; totalDeductionVal = 0;
+                
+                const isMarried = Math.random() < 0.5;
+                const isMale = Math.random() < 0.5;
+                const primaryName = isMale ? maleNames[Math.floor(Math.random() * maleNames.length)] : femaleNames[Math.floor(Math.random() * femaleNames.length)];
+                const spouseName = isMale ? femaleNames[Math.floor(Math.random() * femaleNames.length)] : maleNames[Math.floor(Math.random() * maleNames.length)];
+
+                // 1. Basic / Married Allowance
+                if (isMarried) {
+                    allowances.push({ desc: '已婚人士免稅額 $290,000', val: 290000 });
+                    totalAllowanceVal += 290000;
+                } else {
+                    allowances.push({ desc: '基本免稅額 $145,000', val: 145000 });
+                    totalAllowanceVal += 145000;
+                }
+
+                // 2. Children & Single Parent Allowance
+                const numChildren = Math.floor(Math.random() * 3) + 1; // 1 to 3 children
+                const hasNewborn = Math.random() < 0.4;
+                
+                if (hasNewborn) {
+                    const normalChildren = numChildren - 1;
+                    if (normalChildren > 0) {
+                        allowances.push({ desc: `${normalChildren} 名子女免稅額 ($140,000 × ${normalChildren})`, val: normalChildren * 140000 });
+                        totalAllowanceVal += normalChildren * 140000;
+                    }
+                    allowances.push({ desc: '1 名初生子女免稅額及額外免稅額 ($140,000 × 2)', val: 280000 });
+                    totalAllowanceVal += 280000;
+                } else {
+                    allowances.push({ desc: `${numChildren} 名子女免稅額 ($140,000 × ${numChildren})`, val: numChildren * 140000 });
+                    totalAllowanceVal += numChildren * 140000;
+                }
+
+                // Add Single Parent Allowance if Single with Children!
+                if (!isMarried) {
+                    allowances.push({ desc: '單親免稅額 $145,000', val: 145000 });
+                    totalAllowanceVal += 145000;
+                }
+
+                // 3. Parent / Grandparent Allowance (Varied ages & cohabitation)
+                const numParents = Math.random() < 0.6 ? 1 : 2; // 1 or 2 parents
+                let parentDescs = [];
+                
+                for (let i = 0; i < numParents; i++) {
+                    const isMother = i === 0 ? Math.random() < 0.6 : false;
+                    const age = Math.floor(Math.random() * 15) + 55; // 55 to 69 years old
+                    const livesTogether = Math.random() < 0.5;
+                    const relation = isMother ? '母親' : '父親';
+                    
+                    if (age >= 60) {
+                        if (livesTogether) {
+                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($55,000 × 2)`, val: 110000 });
+                            totalAllowanceVal += 110000;
+                            parentDescs.push(`同住的${age}歲${relation}`);
+                        } else {
+                            allowances.push({ desc: `${age}歲${relation}免稅額 $55,000`, val: 55000 });
+                            totalAllowanceVal += 55000;
+                            parentDescs.push(`${age}歲非同住${relation}`);
+                        }
+                    } else {
+                        if (livesTogether) {
+                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($27,500 × 2)`, val: 55000 });
+                            totalAllowanceVal += 55000;
+                            parentDescs.push(`同住的${age}歲${relation}`);
+                        } else {
+                            allowances.push({ desc: `${age}歲${relation}免稅額 $27,500`, val: 27500 });
+                            totalAllowanceVal += 27500;
+                            parentDescs.push(`${age}歲非同住${relation}`);
+                        }
+                    }
+                }
+
+                // 4. Disability Allowance
+                const hasDisabled = Math.random() < 0.3;
+                if (hasDisabled) {
+                    allowances.push({ desc: '傷殘受養人免稅額 $75,000', val: 75000 });
+                    totalAllowanceVal += 75000;
+                }
+
+                // Income Calculation
+                monthlySalary = Math.floor(Math.random() * 65 + 25) * 1000; // Salary range $25,000 - $89,000
+                extraBonusMonths = Math.random() < 0.6 ? 1 : 0;
+                totalMonths = 12 + extraBonusMonths;
+                totalIncome = monthlySalary * totalMonths;
+
+                // MPF REAL DYNAMIC CALCULATION (5% cap $1,500/month or $18,000/year)
+                let mpfDeduction = 0;
+                if (monthlySalary >= 30000) {
+                    mpfDeduction = 18000;
+                } else {
+                    let regularMpf = Math.min(1500, Math.floor(monthlySalary * 0.05));
+                    let bonusMonthIncome = monthlySalary * (1 + extraBonusMonths);
+                    let bonusMpf = Math.min(1500, Math.floor(bonusMonthIncome * 0.05));
+                    mpfDeduction = (regularMpf * 11) + bonusMpf;
+                }
+
+                deductions.push({ desc: `強積金供款 $${mpfDeduction.toLocaleString()}`, val: mpfDeduction });
+                totalDeductionVal = mpfDeduction;
+
+                const hasSecondDeduction = Math.random() < 0.6;
+                let eduExpense = 0;
+                if (hasSecondDeduction) {
+                    eduExpense = Math.floor(Math.random() * 50 + 20) * 1000;
+                    let actualEdu = Math.min(100000, eduExpense);
+                    deductions.push({ desc: `個人進修開支 $${actualEdu.toLocaleString()}`, val: actualEdu });
+                    totalDeductionVal += actualEdu;
+                }
+
+                netIncome = totalIncome - totalAllowanceVal - totalDeductionVal;
+                
+                // Adjust income to ensure Net Income > 0
+                if (netIncome <= 0) {
+                    monthlySalary += Math.ceil((Math.abs(netIncome) + 60000) / totalMonths);
+                    totalIncome = monthlySalary * totalMonths;
+                    if (monthlySalary >= 30000) {
+                        mpfDeduction = 18000;
+                    } else {
+                        let regularMpf = Math.min(1500, Math.floor(monthlySalary * 0.05));
+                        let bonusMonthIncome = monthlySalary * (1 + extraBonusMonths);
+                        let bonusMpf = Math.min(1500, Math.floor(bonusMonthIncome * 0.05));
+                        mpfDeduction = (regularMpf * 11) + bonusMpf;
+                    }
+                    deductions[0] = { desc: `強積金供款 $${mpfDeduction.toLocaleString()}`, val: mpfDeduction };
+                    totalDeductionVal = deductions.reduce((sum, item) => sum + item.val, 0);
+                    netIncome = totalIncome - totalAllowanceVal - totalDeductionVal;
+                }
+
+                // Progressive Tax
+                taxPayable = 0;
+                let remaining = netIncome;
+                let b1 = Math.min(50000, remaining); taxPayable += b1 * 0.02; remaining -= b1;
+                if (remaining > 0) { let b2 = Math.min(50000, remaining); taxPayable += b2 * 0.06; remaining -= b2; }
+                if (remaining > 0) { let b3 = Math.min(50000, remaining); taxPayable += b3 * 0.10; remaining -= b3; }
+                if (remaining > 0) { let b4 = Math.min(50000, remaining); taxPayable += b4 * 0.14; remaining -= b4; }
+                if (remaining > 0) { taxPayable += remaining * 0.17; }
+
+                prevProvisional = Math.floor(Math.random() * 8 + 2) * 1000;
+                finalTaxPayable = (taxPayable * 2) - prevProvisional;
+
+                // Scenario Text Generation
+                scenarioText = `${primaryName}的每月薪金為 $${monthlySalary.toLocaleString()}，`;
+                if (extraBonusMonths > 0) scenarioText += `年終可額外獲發 ${extraBonusMonths} 個月薪金作獎金。`;
+                
+                if (isMarried) {
+                    scenarioText += `${spouseName}為家庭主婦，選擇與配偶合併報稅。`;
+                    scenarioText += `${primaryName}與配偶育有 ${numChildren} 名子女${hasNewborn ? '（包含 1 名本年度誕生的初生女兒）' : ''}，`;
+                } else {
+                    scenarioText += `${primaryName}屬單親身份，獨力撫養 ${numChildren} 名子女${hasNewborn ? '（包含 1 名本年度誕生的初生女兒）' : ''}，`;
+                }
+
+                scenarioText += `並需供養${parentDescs.join('及')}。`;
+                if (hasDisabled) scenarioText += `${primaryName}亦需照顧一名傷殘受養人。`;
+                if (hasSecondDeduction) scenarioText += `${primaryName}本年度修讀課程，學費開支為 $${eduExpense.toLocaleString()}。`;
+                scenarioText += ` 計算${isMarried ? `${primaryName}及${spouseName}的家庭` : primaryName}的薪俸稅（假設去年的預繳稅款為 $${prevProvisional.toLocaleString()}）。`;
+            }
+
+            return {
+                text: scenarioText,
+                answers: { a: totalIncome, b: totalAllowanceVal, c: totalDeductionVal, d: netIncome, e: taxPayable, f: finalTaxPayable },
+                details: { monthlySalary, totalMonths, allowances, deductions, prevProvisional }
+            };
+        }
+
+        function renderQuestion(qObj) {
+            document.getElementById('question-text').innerText = qObj.text;
+            document.getElementById('question-number').innerText = `題目 #${currentIndex + 1}`;
+            keysOrder.forEach(key => {
+                const inputEl = document.getElementById(`input-${key}`);
+                const feedbackEl = document.getElementById(`feedback-${key}`);
+                const markEl = document.getElementById(`mark-${key}`);
+                inputEl.value = '';
+                inputEl.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50', 'bg-rose-50');
+                feedbackEl.classList.add('hidden');
+                feedbackEl.innerHTML = '';
+                markEl.innerHTML = '';
+            });
+            document.getElementById('btn-prev-q').disabled = (currentIndex === 0);
+            document.getElementById('input-a').focus();
+        }
+
+        document.getElementById('btn-next-q').addEventListener('click', () => {
+            currentIndex++;
+            if (currentIndex >= questionHistory.length) questionHistory.push(generateQuestion());
+            renderQuestion(questionHistory[currentIndex]);
+        });
+
+        document.getElementById('btn-prev-q').addEventListener('click', () => {
+            if (currentIndex > 0) { currentIndex--; renderQuestion(questionHistory[currentIndex]); }
+        });
+
+        questionHistory.push(generateQuestion());
+        currentIndex = 0;
+        renderQuestion(questionHistory[0]);
+    </script>
+</body>
+</html>
