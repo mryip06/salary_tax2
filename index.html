@@ -23,7 +23,7 @@
             <h1 class="text-base md:text-xl font-bold text-indigo-700 flex items-center gap-2">
                 <i class="fa-solid fa-calculator"></i> 香港薪俸稅互動練習
             </h1>
-            <p class="text-xs text-slate-500 mt-0.5">💡 輸入框支援直接計算，例如輸入 <code>25000*0.05*12=</code> 或按 Enter 自動算數並核對！</p>
+            <p class="text-xs text-slate-500 mt-0.5">💡 提示：輸入框支援直接計算，例如輸入 <code>25000*5%*12=</code> 或按 Enter 自動算數並核對！</p>
         </header>
 
         <!-- Main Layout: 2 Columns Grid -->
@@ -58,7 +58,7 @@
 
                     <!-- Sub-question (b) -->
                     <div class="bg-white border rounded-md p-2 shadow-sm">
-                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(b) 免稅額總和 (表 7.1)</label>
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(b) 免稅額總和 (附表一)</label>
                         <div class="relative flex items-center gap-1.5">
                             <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
                             <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按 Enter 提交">
@@ -70,7 +70,7 @@
 
                     <!-- Sub-question (c) -->
                     <div class="bg-white border rounded-md p-2 shadow-sm">
-                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(c) 扣除額總和 (表 7.2，含強積金 MPF)</label>
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(c) 扣除額總和 (含強積金 MPF)</label>
                         <div class="relative flex items-center gap-1.5">
                             <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
                             <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：25000*5%*12">
@@ -130,31 +130,34 @@
 
             </main>
 
-            <!-- Right Column: Full Tax Reference Tables (5 cols) -->
+            <!-- Right Column: Full Reference Tables following Image Appendix 1 (5 cols) -->
             <aside class="lg:col-span-5 space-y-3">
                 
-                <!-- Table 7.1 Allowance -->
+                <!-- Appendix 1 Table -->
                 <div class="glass-card rounded-xl p-3 shadow-md border border-slate-200">
                     <h2 class="text-xs md:text-sm font-bold text-indigo-800 mb-2 flex items-center gap-1.5 border-b pb-1.5">
-                        <i class="fa-solid fa-table-list text-indigo-600"></i> 表 7.1 免稅額表 (2026/2027)
+                        <i class="fa-solid fa-table-list text-indigo-600"></i> 附表一：免稅額及扣除額 (2026/2027 及其中後)
                     </h2>
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
-                        <table class="w-full text-xs text-left">
-                            <thead class="bg-slate-100 text-slate-700 border-b">
-                                <tr><th class="p-1.5">免稅項目</th><th class="p-1.5 text-right">金額 ($)</th></tr>
+                        <table class="w-full text-[11px] md:text-xs text-left">
+                            <thead class="bg-slate-100 text-slate-700 border-b font-bold">
+                                <tr><th class="p-1.5" colspan="2">免稅額</th><th class="p-1.5 text-right">金額 ($)</th></tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
-                                <tr><td class="p-1.5">基本免稅額</td><td class="p-1.5 text-right font-mono font-semibold">145,000</td></tr>
-                                <tr><td class="p-1.5">已婚人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">290,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">單親免稅額</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">145,000</td></tr>
-                                <tr><td class="p-1.5">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">初生子女額外免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
-                                <tr><td class="p-1.5">供養父母/祖父母 (60歲或以上)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
-                                <tr><td class="p-1.5">供養父母額外免稅額 (同住, 60歲+)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
-                                <tr><td class="p-1.5">供養父母/祖父母 (55-59歲)</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
-                                <tr><td class="p-1.5">供養父母額外免稅額 (同住, 55-59歲)</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
-                                <tr><td class="p-1.5">傷殘受養人免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
-                                <tr><td class="p-1.5">傷殘人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
+                                <tr><td class="p-1.5" colspan="2">基本免稅額</td><td class="p-1.5 text-right font-mono font-semibold">145,000</td></tr>
+                                <tr><td class="p-1.5" colspan="2">已婚人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">290,000</td></tr>
+                                <tr><td class="p-1.5" colspan="2">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-500" colspan="2">第一名至第九名子女</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">新生子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900" colspan="2">供養兄弟姊妹免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">37,500</td></tr>
+                                <tr><td class="p-1.5" colspan="2">供養父母/祖父母/外祖父母免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
+                                <tr><td class="p-1.5" colspan="2">供養父母/祖父母/外祖父母額外免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲</td><td class="p-1.5 text-right font-mono font-semibold">27,200</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900" colspan="2">單親免稅額</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">145,000</td></tr>
+                                <tr><td class="p-1.5" colspan="2">傷殘受養人免稅額</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -167,7 +170,7 @@
                     </h2>
                     <div class="overflow-x-auto rounded-lg border border-slate-200">
                         <table class="w-full text-xs text-left">
-                            <thead class="bg-slate-100 text-slate-700 border-b">
+                            <thead class="bg-slate-100 text-slate-700 border-b font-bold">
                                 <tr><th class="p-1.5">常見扣稅項目</th><th class="p-1.5 text-right">扣稅上限 ($)</th></tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
@@ -177,7 +180,6 @@
                                 <tr class="bg-amber-50"><td class="p-1.5">個人進修開支</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
                                 <tr class="bg-amber-50"><td class="p-1.5">居所貸款利息</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
                                 <tr class="bg-amber-50"><td class="p-1.5">長者住宿照顧開支</td><td class="p-1.5 text-right font-mono">110,000</td></tr>
-                                <tr><td class="p-1.5 text-slate-500">住宅租金扣除</td><td class="p-1.5 text-right font-mono text-slate-500">100,000 / 120,000</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -264,7 +266,7 @@
             });
         });
 
-        // Question Generator (Dynamic Age, Real Dynamic MPF, Single Parent Allowance)
+        // Question Generator (Strictly matching Appendix 1 values & include Siblings)
         function generateQuestion() {
             let totalIncome = 0, totalAllowanceVal = 0, totalDeductionVal = 0, netIncome = 0;
             let monthlySalary = 0, totalMonths = 12, extraBonusMonths = 0, scenarioText = '';
@@ -297,7 +299,7 @@
                         allowances.push({ desc: `${normalChildren} 名子女免稅額 ($140,000 × ${normalChildren})`, val: normalChildren * 140000 });
                         totalAllowanceVal += normalChildren * 140000;
                     }
-                    allowances.push({ desc: '1 名初生子女免稅額及額外免稅額 ($140,000 × 2)', val: 280000 });
+                    allowances.push({ desc: '1 名新生子女免稅額及額外免稅額 ($140,000 × 2)', val: 280000 });
                     totalAllowanceVal += 280000;
                 } else {
                     allowances.push({ desc: `${numChildren} 名子女免稅額 ($140,000 × ${numChildren})`, val: numChildren * 140000 });
@@ -310,8 +312,17 @@
                     totalAllowanceVal += 145000;
                 }
 
-                // 3. Parent / Grandparent Allowance (Varied ages & cohabitation)
-                const numParents = Math.random() < 0.6 ? 1 : 2; // 1 or 2 parents
+                // 3. Sibling Allowance ($37,500 each)
+                const hasSiblings = Math.random() < 0.4;
+                let siblingCount = 0;
+                if (hasSiblings) {
+                    siblingCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 siblings
+                    allowances.push({ desc: `${siblingCount} 名供養兄弟姊妹免稅額 ($37,500 × ${siblingCount})`, val: siblingCount * 37500 });
+                    totalAllowanceVal += siblingCount * 37500;
+                }
+
+                // 4. Parent / Grandparent Allowance
+                const numParents = Math.random() < 0.6 ? 1 : 2;
                 let parentDescs = [];
                 
                 for (let i = 0; i < numParents; i++) {
@@ -332,8 +343,9 @@
                         }
                     } else {
                         if (livesTogether) {
-                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($27,500 × 2)`, val: 55000 });
-                            totalAllowanceVal += 55000;
+                            // 55-59 Living Together Extra Allowance = $27,200 (Total = 27,500 + 27,200 = 54,700)
+                            allowances.push({ desc: `${age}歲同住${relation}免稅額及同住額外免稅額 ($27,500 + $27,200)`, val: 54700 });
+                            totalAllowanceVal += 54700;
                             parentDescs.push(`同住的${age}歲${relation}`);
                         } else {
                             allowances.push({ desc: `${age}歲${relation}免稅額 $27,500`, val: 27500 });
@@ -343,7 +355,7 @@
                     }
                 }
 
-                // 4. Disability Allowance
+                // 5. Disability Allowance
                 const hasDisabled = Math.random() < 0.3;
                 if (hasDisabled) {
                     allowances.push({ desc: '傷殘受養人免稅額 $75,000', val: 75000 });
@@ -351,12 +363,12 @@
                 }
 
                 // Income Calculation
-                monthlySalary = Math.floor(Math.random() * 65 + 25) * 1000; // Salary range $25,000 - $89,000
+                monthlySalary = Math.floor(Math.random() * 65 + 25) * 1000;
                 extraBonusMonths = Math.random() < 0.6 ? 1 : 0;
                 totalMonths = 12 + extraBonusMonths;
                 totalIncome = monthlySalary * totalMonths;
 
-                // MPF REAL DYNAMIC CALCULATION (5% cap $1,500/month or $18,000/year)
+                // MPF REAL DYNAMIC CALCULATION
                 let mpfDeduction = 0;
                 if (monthlySalary >= 30000) {
                     mpfDeduction = 18000;
@@ -422,6 +434,7 @@
                 }
 
                 scenarioText += `並需供養${parentDescs.join('及')}。`;
+                if (hasSiblings) scenarioText += `${primaryName}本年度亦負擔 ${siblingCount} 名未成年弟弟/妹妹的全年生活開支。`;
                 if (hasDisabled) scenarioText += `${primaryName}亦需照顧一名傷殘受養人。`;
                 if (hasSecondDeduction) scenarioText += `${primaryName}本年度修讀課程，學費開支為 $${eduExpense.toLocaleString()}。`;
                 scenarioText += ` 計算${isMarried ? `${primaryName}及${spouseName}的家庭` : primaryName}的薪俸稅（假設去年的預繳稅款為 $${prevProvisional.toLocaleString()}）。`;
