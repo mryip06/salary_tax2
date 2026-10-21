@@ -149,7 +149,7 @@
                                 <tr><td class="p-1.5" colspan="2">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-500" colspan="2">第一名至第九名子女</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
                                 <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">新生子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900" colspan="2">供養兄弟姊妹免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">37,500</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">供養兄弟姊妹免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">37,500</td></tr>
                                 <tr><td class="p-1.5" colspan="2">供養父母/祖父母/外祖父母免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
@@ -220,65 +220,7 @@
             } catch (err) {}
         }
 
-        // Generate Progressive Tax Solutions (Both Full Breakdown & Shortcut)
-        function getTaxBreakdownInfo(netIncome) {
-            let rem = netIncome;
-            let fullParts = [];
-            let shortcutParts = [];
-            let baseTax = 0;
-
-            // Tier 1: 0 - 50,000 @ 2% (Max $1,000)
-            let b1 = Math.min(50000, rem);
-            if (b1 > 0) {
-                fullParts.push(`${formatNumber(b1)}×2%`);
-                rem -= b1;
-            }
-
-            // Tier 2: 50,001 - 100,000 @ 6% (Max $3,000, Cumulative = $1,000)
-            if (rem > 0) {
-                baseTax = 1000;
-                let b2 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b2)}×6%`);
-                shortcutParts = [`1,000`, `${formatNumber(b2)}×6%`];
-                rem -= b2;
-            }
-
-            // Tier 3: 100,001 - 150,000 @ 10% (Max $5,000, Cumulative = $4,000)
-            if (rem > 0) {
-                baseTax = 4000;
-                let b3 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b3)}×10%`);
-                shortcutParts = [`4,000`, `${formatNumber(b3)}×10%`];
-                rem -= b3;
-            }
-
-            // Tier 4: 150,001 - 200,000 @ 14% (Max $7,000, Cumulative = $9,000)
-            if (rem > 0) {
-                baseTax = 9000;
-                let b4 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b4)}×14%`);
-                shortcutParts = [`9,000`, `${formatNumber(b4)}×14%`];
-                rem -= b4;
-            }
-
-            // Tier 5: > 200,000 @ 17% (Cumulative = $16,000)
-            if (rem > 0) {
-                baseTax = 16000;
-                fullParts.push(`${formatNumber(rem)}×17%`);
-                shortcutParts = [`16,000`, `${formatNumber(rem)}×17%`];
-            }
-
-            const method1 = fullParts.join(' + ');
-            const method2 = shortcutParts.length > 0 ? shortcutParts.join(' + ') : null;
-
-            if (method2 && method2 !== method1) {
-                return `<strong>(e)：</strong><br>• 方法一（拆解）：${method1} = <strong>$${formatNumber(qAnswersE(netIncome))}</strong><br>• 方法二（速算）：${method2} = <strong>$${formatNumber(qAnswersE(netIncome))}</strong>`;
-            } else {
-                return `<strong>(e)：</strong> ${method1} = <strong>$${formatNumber(qAnswersE(netIncome))}</strong>`;
-            }
-        }
-
-        function qAnswersE(netIncome) {
+        function calculateTax(netIncome) {
             let taxPayable = 0;
             let remaining = netIncome;
             let b1 = Math.min(50000, remaining); taxPayable += b1 * 0.02; remaining -= b1;
@@ -287,6 +229,55 @@
             if (remaining > 0) { let b4 = Math.min(50000, remaining); taxPayable += b4 * 0.14; remaining -= b4; }
             if (remaining > 0) { taxPayable += remaining * 0.17; }
             return taxPayable;
+        }
+
+        // Generate Progressive Tax Solutions (Both Full Breakdown & Shortcut)
+        function getTaxBreakdownInfo(netIncome) {
+            let rem = netIncome;
+            let fullParts = [];
+            let shortcutParts = [];
+            let totalTax = calculateTax(netIncome);
+
+            let b1 = Math.min(50000, rem);
+            if (b1 > 0) {
+                fullParts.push(`${formatNumber(b1)}×2%`);
+                rem -= b1;
+            }
+
+            if (rem > 0) {
+                let b2 = Math.min(50000, rem);
+                fullParts.push(`${formatNumber(b2)}×6%`);
+                shortcutParts = [`1,000`, `${formatNumber(b2)}×6%`];
+                rem -= b2;
+            }
+
+            if (rem > 0) {
+                let b3 = Math.min(50000, rem);
+                fullParts.push(`${formatNumber(b3)}×10%`);
+                shortcutParts = [`4,000`, `${formatNumber(b3)}×10%`];
+                rem -= b3;
+            }
+
+            if (rem > 0) {
+                let b4 = Math.min(50000, rem);
+                fullParts.push(`${formatNumber(b4)}×14%`);
+                shortcutParts = [`9,000`, `${formatNumber(b4)}×14%`];
+                rem -= b4;
+            }
+
+            if (rem > 0) {
+                fullParts.push(`${formatNumber(rem)}×17%`);
+                shortcutParts = [`16,000`, `${formatNumber(rem)}×17%`];
+            }
+
+            const method1 = fullParts.join(' + ');
+            const method2 = shortcutParts.length > 0 ? shortcutParts.join(' + ') : null;
+
+            if (method2 && method2 !== method1) {
+                return `<strong>(e)：</strong><br>• 方法一（拆解）：${method1} = <strong>$${formatNumber(totalTax)}</strong><br>• 方法二（速算）：${method2} = <strong>$${formatNumber(totalTax)}</strong>`;
+            } else {
+                return `<strong>(e)：</strong> ${method1} = <strong>$${formatNumber(totalTax)}</strong>`;
+            }
         }
 
         function submitSingle(key) {
@@ -475,8 +466,7 @@
                     netIncome = totalIncome - totalAllowanceVal - totalDeductionVal;
                 }
 
-                taxPayable = qAnswersE(netIncome);
-
+                taxPayable = calculateTax(netIncome);
                 prevProvisional = Math.floor(Math.random() * 8 + 2) * 1000;
                 finalTaxPayable = (taxPayable * 2) - prevProvisional;
 
