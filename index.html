@@ -21,9 +21,9 @@
         <!-- Header Bar -->
         <header class="glass-card rounded-xl p-3 shadow-sm mb-3">
             <h1 class="text-base md:text-xl font-bold text-indigo-700 flex items-center gap-2">
-                <i class="fa-solid fa-calculator"></i> 香港薪俸稅互動練習
+                <i class="fa-solid fa-calculator"></i> 香港薪俸稅互動練習機
             </h1>
-            <p class="text-xs text-slate-500 mt-0.5">💡 提示：輸入框支援直接計算，例如輸入 <code>25000*5%*12=</code> 或按 Enter 自動算數並核對！</p>
+            <p class="text-xs text-slate-500 mt-0.5">💡 提示：輸入框支援直接算式計算，例如輸入 <code>25000*5%*12=</code> 或按 Enter 自動算數並核對！</p>
         </header>
 
         <!-- Main Layout: 2 Columns Grid -->
@@ -49,7 +49,7 @@
                         <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(a) 全年總收入</label>
                         <div class="relative flex items-center gap-1.5">
                             <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
-                            <input type="text" id="input-a" data-key="a" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：57000*13 (按 Enter 提交)">
+                            <input type="text" id="input-a" data-key="a" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按 Enter 提交">
                             <button onclick="submitSingle('a')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
                             <span id="mark-a" class="text-base font-bold min-w-[24px] text-center"></span>
                         </div>
@@ -61,7 +61,7 @@
                         <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(b) 免稅額總和 (附表一)</label>
                         <div class="relative flex items-center gap-1.5">
                             <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
-                            <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：145000+280000+110000 (按 Enter 提交)">
+                            <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="按 Enter 提交">
                             <button onclick="submitSingle('b')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
                             <span id="mark-b" class="text-base font-bold min-w-[24px] text-center"></span>
                         </div>
@@ -73,7 +73,7 @@
                         <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(c) 扣除額總和 (含強積金 MPF)</label>
                         <div class="relative flex items-center gap-1.5">
                             <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
-                            <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：25000*5%*12 (按 Enter 提交)">
+                            <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：25000*5%*12">
                             <button onclick="submitSingle('c')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
                             <span id="mark-c" class="text-base font-bold min-w-[24px] text-center"></span>
                         </div>
@@ -148,14 +148,14 @@
                                 <tr><td class="p-1.5" colspan="2">已婚人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">290,000</td></tr>
                                 <tr><td class="p-1.5" colspan="2">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-500" colspan="2">第一名至第九名子女</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">新生子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">新生子女額外免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
                                 <tr class="bg-indigo-50/50"><td class="p-1.5 pl-4 font-medium text-indigo-900" colspan="2">供養兄弟姊妹免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">37,500</td></tr>
                                 <tr><td class="p-1.5" colspan="2">供養父母/祖父母/外祖父母免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
                                 <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
                                 <tr><td class="p-1.5" colspan="2">供養父母/祖父母/外祖父母額外免稅額 (每名)</td><td class="p-1.5 text-right font-mono"></td></tr>
-                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
-                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲</td><td class="p-1.5 text-right font-mono font-semibold">27,200</td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 60 歲或以上 (同住)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr><td class="p-1.5 pl-4 text-slate-600" colspan="2">年齡為 55 歲或以上，但未滿 60 歲 (同住)</td><td class="p-1.5 text-right font-mono font-semibold">27,200</td></tr>
                                 <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900" colspan="2">單親免稅額</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">145,000</td></tr>
                                 <tr><td class="p-1.5" colspan="2">傷殘受養人免稅額</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
                             </tbody>
@@ -221,62 +221,64 @@
         }
 
         function calculateTax(netIncome) {
+            if (netIncome <= 0) return 0;
             let taxPayable = 0;
             let remaining = netIncome;
+
+            // 1st band: 50,000 @ 2%
             let b1 = Math.min(50000, remaining); taxPayable += b1 * 0.02; remaining -= b1;
+            // 2nd band: 50,000 @ 6%
             if (remaining > 0) { let b2 = Math.min(50000, remaining); taxPayable += b2 * 0.06; remaining -= b2; }
+            // 3rd band: 50,000 @ 10%
             if (remaining > 0) { let b3 = Math.min(50000, remaining); taxPayable += b3 * 0.10; remaining -= b3; }
+            // 4th band: 50,000 @ 14%
             if (remaining > 0) { let b4 = Math.min(50000, remaining); taxPayable += b4 * 0.14; remaining -= b4; }
+            // 5th band: remaining @ 17%
             if (remaining > 0) { taxPayable += remaining * 0.17; }
-            return taxPayable;
+            
+            return Math.round(taxPayable * 100) / 100;
         }
 
-        // Generate Progressive Tax Solutions (Both Full Breakdown & Shortcut)
+        // Generate Progressive Tax Solutions for ALL 5 Bracket Ranges (Method 1: Detailed Breakdown vs Method 2: Shortcut)
         function getTaxBreakdownInfo(netIncome) {
-            let rem = netIncome;
-            let fullParts = [];
-            let shortcutParts = [];
-            let totalTax = calculateTax(netIncome);
-
-            let b1 = Math.min(50000, rem);
-            if (b1 > 0) {
-                fullParts.push(`${formatNumber(b1)}×2%`);
-                rem -= b1;
+            if (netIncome <= 0) {
+                return `<strong>(e)：</strong> 應課稅入息實額小於或等於 0，免繳薪俸稅 = <strong>$0</strong>`;
             }
 
-            if (rem > 0) {
-                let b2 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b2)}×6%`);
-                shortcutParts = [`1,000`, `${formatNumber(b2)}×6%`];
-                rem -= b2;
-            }
+            const totalTax = calculateTax(netIncome);
+            let method1 = '';
+            let method2 = '';
 
-            if (rem > 0) {
-                let b3 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b3)}×10%`);
-                shortcutParts = [`4,000`, `${formatNumber(b3)}×10%`];
-                rem -= b3;
-            }
-
-            if (rem > 0) {
-                let b4 = Math.min(50000, rem);
-                fullParts.push(`${formatNumber(b4)}×14%`);
-                shortcutParts = [`9,000`, `${formatNumber(b4)}×14%`];
-                rem -= b4;
-            }
-
-            if (rem > 0) {
-                fullParts.push(`${formatNumber(rem)}×17%`);
-                shortcutParts = [`16,000`, `${formatNumber(rem)}×17%`];
-            }
-
-            const method1 = fullParts.join(' + ');
-            const method2 = shortcutParts.length > 0 ? shortcutParts.join(' + ') : null;
-
-            if (method2 && method2 !== method1) {
-                return `<strong>(e)：</strong><br>• 方法一（拆解）：${method1} = <strong>$${formatNumber(totalTax)}</strong><br>• 方法二（速算）：${method2} = <strong>$${formatNumber(totalTax)}</strong>`;
+            if (netIncome <= 50000) {
+                // Bracket 1: 0 < N <= 50,000
+                method1 = `${formatNumber(netIncome)}×2%`;
+                method2 = `${formatNumber(netIncome)}×2%`;
+            } else if (netIncome <= 100000) {
+                // Bracket 2: 50,000 < N <= 100,000
+                const rem = netIncome - 50000;
+                method1 = `50,000×2% + ${formatNumber(rem)}×6%`;
+                method2 = `1,000 + ${formatNumber(rem)}×6%`;
+            } else if (netIncome <= 150000) {
+                // Bracket 3: 100,000 < N <= 150,000
+                const rem = netIncome - 100000;
+                method1 = `50,000×2% + 50,000×6% + ${formatNumber(rem)}×10%`;
+                method2 = `4,000 + ${formatNumber(rem)}×10%`;
+            } else if (netIncome <= 200000) {
+                // Bracket 4: 150,000 < N <= 200,000
+                const rem = netIncome - 150000;
+                method1 = `50,000×2% + 50,000×6% + 50,000×10% + ${formatNumber(rem)}×14%`;
+                method2 = `9,000 + ${formatNumber(rem)}×14%`;
             } else {
+                // Bracket 5: N > 200,000
+                const rem = netIncome - 200000;
+                method1 = `50,000×2% + 50,000×6% + 50,000×10% + 50,000×14% + ${formatNumber(rem)}×17%`;
+                method2 = `16,000 + ${formatNumber(rem)}×17%`;
+            }
+
+            if (method1 === method2) {
                 return `<strong>(e)：</strong> ${method1} = <strong>$${formatNumber(totalTax)}</strong>`;
+            } else {
+                return `<strong>(e)：</strong><br>• 方法一（拆解）：${method1} = <strong>$${formatNumber(totalTax)}</strong><br>• 方法二（速算）：${method2} = <strong>$${formatNumber(totalTax)}</strong>`;
             }
         }
 
@@ -287,7 +289,8 @@
             const markEl = document.getElementById(`mark-${key}`);
 
             evaluateInlineExpr(inputEl);
-            const userVal = parseFloat(inputEl.value);
+            const userRawValue = inputEl.value;
+            const userVal = parseFloat(userRawValue);
             const correctVal = q.answers[key];
 
             const steps = {
@@ -299,7 +302,9 @@
                 f: `<strong>(f)：</strong> $${formatNumber(q.answers.e)} × 2 - $${formatNumber(q.details.prevProvisional)} = <strong>$${formatNumber(q.answers.f)}</strong>`
             };
 
-            if (!isNaN(userVal) && Math.abs(userVal - correctVal) <= 1.0) {
+            const isCorrect = !isNaN(userVal) && Math.abs(userVal - correctVal) <= 1.0;
+
+            if (isCorrect) {
                 inputEl.classList.remove('border-rose-500', 'bg-rose-50');
                 inputEl.classList.add('border-emerald-500', 'bg-emerald-50');
                 markEl.innerHTML = '<span class="text-emerald-600">✅</span>';
@@ -312,6 +317,16 @@
             feedbackEl.innerHTML = steps[key];
             feedbackEl.classList.remove('hidden');
 
+            // Save user state into question history for persistence
+            if (!q.userState) q.userState = {};
+            q.userState[key] = {
+                value: userRawValue,
+                isCorrect: isCorrect,
+                markHtml: markEl.innerHTML,
+                feedbackHtml: steps[key],
+                feedbackVisible: true
+            };
+
             const currentIndexInKeys = keysOrder.indexOf(key);
             if (currentIndexInKeys < keysOrder.length - 1) {
                 document.getElementById(`input-${keysOrder[currentIndexInKeys + 1]}`).focus();
@@ -320,6 +335,7 @@
             }
         }
 
+        // Attach event listeners for Enter & Formula Inline Calculation
         document.querySelectorAll('.answer-input').forEach(input => {
             const key = input.getAttribute('data-key');
             input.addEventListener('keydown', (e) => {
@@ -329,6 +345,13 @@
                 }
             });
             input.addEventListener('input', () => {
+                // Save live typing state
+                const q = questionHistory[currentIndex];
+                if (q) {
+                    if (!q.userState) q.userState = {};
+                    if (!q.userState[key]) q.userState[key] = {};
+                    q.userState[key].value = input.value;
+                }
                 if (input.value.includes('=')) evaluateInlineExpr(input);
             });
         });
@@ -490,37 +513,69 @@
             return {
                 text: scenarioText,
                 answers: { a: totalIncome, b: totalAllowanceVal, c: totalDeductionVal, d: netIncome, e: taxPayable, f: finalTaxPayable },
-                details: { monthlySalary, totalMonths, allowances, deductions, prevProvisional }
+                details: { monthlySalary, totalMonths, allowances, deductions, prevProvisional },
+                userState: {}
             };
         }
 
+        // Render Question with Full User State Restoration
         function renderQuestion(qObj) {
             document.getElementById('question-text').innerText = qObj.text;
             document.getElementById('question-number').innerText = `題目 #${currentIndex + 1}`;
+            
             keysOrder.forEach(key => {
                 const inputEl = document.getElementById(`input-${key}`);
                 const feedbackEl = document.getElementById(`feedback-${key}`);
                 const markEl = document.getElementById(`mark-${key}`);
+                
+                // Clear default styles
                 inputEl.value = '';
                 inputEl.classList.remove('border-emerald-500', 'border-rose-500', 'bg-emerald-50', 'bg-rose-50');
                 feedbackEl.classList.add('hidden');
                 feedbackEl.innerHTML = '';
                 markEl.innerHTML = '';
+
+                // Restore previous inputs & answers if available in history
+                if (qObj.userState && qObj.userState[key]) {
+                    const saved = qObj.userState[key];
+                    if (saved.value !== undefined) inputEl.value = saved.value;
+                    
+                    if (saved.isCorrect !== undefined) {
+                        if (saved.isCorrect) {
+                            inputEl.classList.add('border-emerald-500', 'bg-emerald-50');
+                        } else {
+                            inputEl.classList.add('border-rose-500', 'bg-rose-50');
+                        }
+                    }
+
+                    if (saved.markHtml) markEl.innerHTML = saved.markHtml;
+                    if (saved.feedbackHtml && saved.feedbackVisible) {
+                        feedbackEl.innerHTML = saved.feedbackHtml;
+                        feedbackEl.classList.remove('hidden');
+                    }
+                }
             });
+
             document.getElementById('btn-prev-q').disabled = (currentIndex === 0);
             document.getElementById('input-a').focus();
         }
 
         document.getElementById('btn-next-q').addEventListener('click', () => {
             currentIndex++;
-            if (currentIndex >= questionHistory.length) questionHistory.push(generateQuestion());
+            if (currentIndex >= questionHistory.length) {
+                questionHistory.push(generateQuestion());
+            }
             renderQuestion(questionHistory[currentIndex]);
         });
 
         document.getElementById('btn-prev-q').addEventListener('click', () => {
-            if (currentIndex > 0) { currentIndex--; renderQuestion(questionHistory[currentIndex]); }
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion(questionHistory[currentIndex]);
+            }
         });
 
+        // Initialize first question
         questionHistory.push(generateQuestion());
         currentIndex = 0;
         renderQuestion(questionHistory[0]);
